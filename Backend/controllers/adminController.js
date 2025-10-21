@@ -95,7 +95,7 @@ const loginAdmin = async (req, res) => {
 
       res.json({ success: true, token });
     } else {
-      res.join({ success: false, message: "Invalid credientials" });
+      res.json({ success: false, message: "Invalid credientials" });
     }
   } catch (error) {
     console.error(error);
