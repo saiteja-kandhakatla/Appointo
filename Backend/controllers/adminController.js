@@ -4,7 +4,9 @@ const cloudinary = require("cloudinary").v2;
 const doctorModel = require("../Models/doctorModel");
 const jwt = require("jsonwebtoken");
 const addDoctor = async (req, res) => {
+  // res.send({ message: "Insid eadd adcor " });
   try {
+    const imageFile = req.file;
     const {
       name,
       email,
@@ -16,7 +18,6 @@ const addDoctor = async (req, res) => {
       fees,
       address,
     } = req.body;
-    const imageFile = req.file;
     //  if missing fields->
     if (
       !name ||
