@@ -16,7 +16,6 @@ const Appointment = () => {
   const fetchDocInfo = async () => {
     const docInfo = doctors.find((doc) => doc._id === docId);
     setDocInfo(docInfo);
-    // console.log(docInfo);
   };
 
   const getAvailableSlots = async () => {
@@ -68,11 +67,6 @@ const Appointment = () => {
   useEffect(() => {
     fetchDocInfo();
   }, [doctors, docId]);
-
-  // useefecr
-  // useEffect(() => {
-  //   // console.log(docSlots);
-  // }, [docSlots]);
 
   useEffect(() => {
     getAvailableSlots();

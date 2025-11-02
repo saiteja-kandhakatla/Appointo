@@ -7,8 +7,7 @@ const authAdmin = async (req, res, next) => {
     if (!atoken) {
       return res.json({
         success: false,
-        text: "IN token",
-        message: "Now authorized login again",
+        message: "token not present ",
       });
     }
 
@@ -17,7 +16,6 @@ const authAdmin = async (req, res, next) => {
     // decode the token
     const decodeToken = jwt.verify(atoken, process.env.JWT_SECRET);
     const key = process.env.ADMIN_EMAIL + process.env.ADMIN_PASSWORD;
-    // console.log("Key in authadmin: ", key);
     if (decodeToken !== key) {
       return res.json({
         success: false,
@@ -28,7 +26,11 @@ const authAdmin = async (req, res, next) => {
     next();
   } catch (error) {
     console.error(error);
-    res.json({ success: false, message: error.message, text: "error block" });
+    res.json({
+      success: false,
+      message: error.message,
+      text: "authAdmin catch  block",
+    });
   }
 };
 module.exports = authAdmin;

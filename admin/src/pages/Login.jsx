@@ -14,18 +14,15 @@ const Login = () => {
 
   const onSubmitHandler = async (event) => {
     event.preventDefault();
-    // console.log(backendUrl);
     try {
       if (state == "Admin") {
         // logic to add admin
-        const { data } = await axios.post(backendUrl + "api/admin/login", {
+        const { data } = await axios.post(backendUrl + "/api/admin/login", {
           email,
           password,
         });
-        // console.log(data);
 
         if (data.success == true) {
-          // console.log(data.token);
           // store the data token to local storage
           localStorage.setItem("aToken", data.token);
           setAToken(data.token);

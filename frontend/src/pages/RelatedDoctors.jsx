@@ -15,7 +15,6 @@ const RelatedDoctors = ({ docId, speciality }) => {
       setRelDocs(doctorData);
     }
   }, [doctors, speciality, docId]);
-  console.log(relDoc);
 
   return (
     <div className="flex flex-col items-center gap-4 my-16 text-gray-900 md:mx-10 ">

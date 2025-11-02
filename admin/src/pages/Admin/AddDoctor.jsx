@@ -39,23 +39,30 @@ const AddDoctor = () => {
         "address",
         JSON.stringify({ line1: address1, line2: address2 })
       );
-      // console.log(formData);
-      // formData.forEach((value, key) => {
-      //   console.log(`${key} : ${value}`);
-      // });
       const { data } = await axios.post(
-        backendUrl + "api/admin/add-doctor",
+        backendUrl + "/api/admin/add-doctor",
         formData,
         { headers: { aToken } }
       );
-      console.log(data);
       if (data.success) {
-        console.log(data);
-
+        setDocImg(false);
+        setDocImgFile("");
+        setPassword("");
+        setEmail("");
+        setAddress1("");
+        setAddress2("");
+        setDegree("");
+        setAbout("");
+        setName("");
+        setFees("");
+        setSpeciality("General physician");
         return toast.success(data.message);
+      } else {
+        toast.error(data.message);
       }
     } catch (e) {
-      console.error(e.message);
+      toast.error(e.message);
+      console.log(error);
     }
 
     // if(data.suc)

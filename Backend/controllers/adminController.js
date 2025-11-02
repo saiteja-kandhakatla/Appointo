@@ -91,7 +91,6 @@ const loginAdmin = async (req, res) => {
       password === process.env.ADMIN_PASSWORD
     ) {
       const key = email + password;
-      // console.log("Key in lgon admin: : ", key);
       const token = jwt.sign(key, process.env.JWT_SECRET);
 
       res.json({ success: true, token });
@@ -107,4 +106,20 @@ const loginAdmin = async (req, res) => {
     });
   }
 };
-module.exports = { addDoctor, loginAdmin };
+
+// API to get all doctors for admin panel
+const getAllDoctors = async (req, res) => {
+  try {
+    const doctors = await doctorModel.find({}).select("-password");
+
+    return res.send({ success: true, doctors });
+  } catch (error) {
+    console.error(error);
+    res.json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+module.exports = { addDoctor, loginAdmin, getAllDoctors };
