@@ -17,7 +17,6 @@ const AdminContextProvider = (props) => {
         { headers: { aToken } }
       );
       if (data.success) {
-        console.log(data.doctors);
         setDoctors(data.doctors);
       } else {
         toast.error(data.message);

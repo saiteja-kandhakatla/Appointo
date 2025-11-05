@@ -61,8 +61,8 @@ const AddDoctor = () => {
         toast.error(data.message);
       }
     } catch (e) {
-      toast.error(e.message);
       console.log(error);
+      toast.error(e.message);
     }
 
     // if(data.suc)
