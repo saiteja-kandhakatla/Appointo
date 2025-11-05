@@ -5,7 +5,8 @@ import { AppContext } from "../context/AppContext";
 const Navbar = () => {
   const navigate = useNavigate();
   const [showMenu, setShowMenu] = useState(false);
-  const { token, setToken } = useContext(AppContext);
+  const { token, setToken, userData } = useContext(AppContext);
+
   const [showDropdown, setShowDropdown] = useState(false);
   const logOut = () => {
     setToken(false);
@@ -42,7 +43,7 @@ const Navbar = () => {
           <div className="flex items-center gap-2 cursor-pointer group relative ">
             <img
               className="w-8 rounded-full"
-              src={assets.profile_pic}
+              src={userData.image ? userData.image : assets.profile_pic}
               alt="profilePic"
             />
             <img
