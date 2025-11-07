@@ -3,6 +3,7 @@ const bcrypt = require("bcrypt");
 const cloudinary = require("cloudinary").v2;
 const doctorModel = require("../Models/doctorModel");
 const jwt = require("jsonwebtoken");
+const appointmentModel = require("../Models/appointmentModel");
 const addDoctor = async (req, res) => {
   // res.send({ message: "Insid eadd adcor " });
   try {
@@ -122,4 +123,18 @@ const getAllDoctors = async (req, res) => {
   }
 };
 
-module.exports = { addDoctor, loginAdmin, getAllDoctors };
+// APi to get all appointments list
+const appointmentsAdmin = async (req, res) => {
+  try {
+    const appointments = await appointmentModel.find({});
+    res.json({ success: true, appointments });
+  } catch (error) {
+    console.error(error);
+    res.json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+module.exports = { addDoctor, loginAdmin, getAllDoctors, appointmentsAdmin };

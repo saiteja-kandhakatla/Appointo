@@ -246,7 +246,6 @@ const razorpayInstance = new razorpay({
 // API to make payement
 const paymentRazorPay = async (req, res) => {
   try {
-    // console.log("hello");
     const { appointmentId } = req.body;
 
     const appointmentData = await appointmentModel.findById(appointmentId);
@@ -276,6 +275,30 @@ const paymentRazorPay = async (req, res) => {
   }
 };
 
+// API to verify payment in razorpay
+const verifyRazorpay = async (req, res) => {
+  try {
+    const { razorpay_order_id } = req.body;
+    const orderInfo = await razorpayInstance.orders.fetch(razorpay_order_id);
+    // console.log(orderInfo);
+    if (orderInfo.status === "paid") {
+      await appointmentModel.findByIdAndUpdate(orderInfo.receipt, {
+        payment: true,
+      });
+
+      return res.json({ success: true, message: "Payment Succesfull" });
+    } else {
+      return res.json({ success: true, message: "Payment unsuccesfull" });
+    }
+  } catch (error) {
+    res.json({
+      success: false,
+      message: error.message,
+      text: "Error in razor pay api",
+    });
+  }
+};
+
 module.exports = {
   registerUser,
   loginUser,
@@ -285,4 +308,5 @@ module.exports = {
   listAppointments,
   cancelAppointment,
   paymentRazorPay,
+  verifyRazorpay,
 };
