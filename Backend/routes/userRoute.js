@@ -7,6 +7,7 @@ const {
   bookAppointment,
   listAppointments,
   cancelAppointment,
+  paymentRazorPay,
 } = require("../controllers/userController");
 const authUser = require("../middlewares/authUser");
 const upload = require("../middlewares/multer");
@@ -24,5 +25,6 @@ userRouter.post(
 userRouter.post("/book-appointment", authUser, bookAppointment);
 userRouter.get("/appointments", authUser, listAppointments);
 userRouter.post("/cancel-appointment", authUser, cancelAppointment);
+userRouter.post("/payment-razorpay", authUser, paymentRazorPay);
 
 module.exports = userRouter;
