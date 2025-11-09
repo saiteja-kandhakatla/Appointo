@@ -4,6 +4,7 @@ const cloudinary = require("cloudinary").v2;
 const doctorModel = require("../Models/doctorModel");
 const jwt = require("jsonwebtoken");
 const appointmentModel = require("../Models/appointmentModel");
+const { default: userModel } = require("../Models/userModel");
 const addDoctor = async (req, res) => {
   // res.send({ message: "Insid eadd adcor " });
   try {
@@ -136,5 +137,70 @@ const appointmentsAdmin = async (req, res) => {
     });
   }
 };
+// API to cancel
+const appointmentCancel = async (req, res) => {
+  try {
+    const { appointmentId } = req.body;
+    // console.log(appointmentId);
+    const appointmentData = await appointmentModel.findById(appointmentId);
 
-module.exports = { addDoctor, loginAdmin, getAllDoctors, appointmentsAdmin };
+    await appointmentModel.findByIdAndUpdate(appointmentId, {
+      cancelled: true,
+    });
+
+    // releasing doctor slot
+    const { docId, slotDate, slotTime } = appointmentData;
+
+    const doctorData = await doctorModel.findById(docId);
+
+    let slots_booked = doctorData.slots_booked || {};
+
+    if (slots_booked[slotDate]) {
+      // remove the cancelled slot
+      slots_booked[slotDate] = slots_booked[slotDate].filter(
+        (e) => e !== slotTime
+      );
+    }
+    await doctorModel.findByIdAndUpdate(docId, { slots_booked });
+    res.json({ success: true, message: "Appointment cancelled" });
+  } catch (error) {
+    res.json({
+      success: false,
+      message: error.message,
+      text: "Error in appointment api",
+    });
+  }
+};
+
+// Api to get dashboard
+const adminDashboard = async (req, res) => {
+  try {
+    // total no of users and top 5
+    const doctors = await doctorModel.find({});
+    const users = await userModel.find({});
+    const appointments = await appointmentModel.find({});
+
+    const dashData = {
+      doctors: doctors.length,
+      appointments: appointments.length,
+      patients: users.length,
+      latestAppointments: appointments.reverse().slice(0, 5),
+    };
+
+    res.json({ success: true, dashData });
+  } catch (e) {
+    return res.json({
+      success: false,
+      message: error.message,
+      text: "Error in appointment api",
+    });
+  }
+};
+module.exports = {
+  addDoctor,
+  loginAdmin,
+  getAllDoctors,
+  appointmentsAdmin,
+  appointmentCancel,
+  adminDashboard
+};

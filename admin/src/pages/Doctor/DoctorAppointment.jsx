@@ -1,18 +1,33 @@
 import React, { useContext, useEffect } from "react";
-import { AdminContext } from "../../context/AdminContext";
+import { DoctorContext } from "../../context/DoctorContext";
 import { AppContext } from "../../context/AppContext";
 import { assets } from "../../assets/assets";
 
-const AllAppointments = () => {
-  const { aToken, appointments, getAllAppointments, cancelAppointment } =
-    useContext(AdminContext);
-  const { calculateAge, slotDateFormat } = useContext(AppContext);
+const DoctorAppointment = () => {
+  const { dToken, getAppointments, appointments, cancelAppointment } =
+    useContext(DoctorContext);
   useEffect(() => {
-    if (aToken) {
-      getAllAppointments();
+    if (dToken) {
+      console.log(appointments);
+      getAppointments();
     }
-  }, [aToken]);
+  }, [dToken]);
+  const { calculateAge, slotDateFormat } = useContext(AppContext);
   return (
+    // <div className="w-full max-w-6xl m-5">
+    //   <p mb->All Appointments</p>
+    //   <div>
+    //     <div>
+    //       <p>#</p>
+    //       <p>Patient Details</p>
+    //       <p>Payment</p>
+    //       <p>Age</p>
+    //       <p>Date & Time</p>
+    //       <p>Fees</p>
+    //       <p>Action</p>
+    //     </div>
+    //   </div>
+    // </div>
     <div className="w-full max-w-6xl m-5">
       <p className="mb-3 text-lg font-medium">All Appointments</p>
 
@@ -69,4 +84,4 @@ const AllAppointments = () => {
   );
 };
 
-export default AllAppointments;
+export default DoctorAppointment;

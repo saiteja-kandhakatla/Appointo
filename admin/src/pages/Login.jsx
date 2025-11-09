@@ -3,6 +3,7 @@ import { assets } from "../assets/assets";
 import { AdminContext } from "../context/AdminContext";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { DoctorContext } from "../context/DoctorContext";
 const Login = () => {
   const [state, setState] = useState("Admin");
 
@@ -11,27 +12,44 @@ const Login = () => {
 
   const { setAToken, backendUrl } = useContext(AdminContext);
   //
+  const { setDToken } = useContext(DoctorContext);
 
   const onSubmitHandler = async (event) => {
     event.preventDefault();
     try {
       if (state == "Admin") {
         // logic to add admin
-        const { data } = await axios.post(backendUrl + "/api/admin/login", {
+        const { data } = await axios.post(backendUrl + "/api/doctor/login", {
           email,
           password,
         });
+        // console.log({ email, password });
 
         if (data.success == true) {
           // store the data token to local storage
           localStorage.setItem("aToken", data.token);
           setAToken(data.token);
+          toast.success("Login Succesfull");
         } else {
           // use react toasitfy to get notify
           toast.error(data.message);
         }
       } else {
         // logic to add doctor
+        const { data } = await axios.post(backendUrl + "/api/doctor/login", {
+          email,
+          password,
+        });
+        // console.l
+        if (data.success == true) {
+          // store the data token to local storage
+          localStorage.setItem("dToken", data.token);
+          setDToken(data.token);
+          // console.log(data.token);
+        } else {
+          // use react toasitfy to get notify
+          toast.error(data.message);
+        }
       }
     } catch (error) {
       console.log("Error:");
