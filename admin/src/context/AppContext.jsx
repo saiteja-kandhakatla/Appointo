@@ -2,14 +2,27 @@ import { createContext } from "react";
 
 export const AppContext = createContext();
 
-const AppContextProvider = (props) => {
+const AppContextProvider = ({ children }) => {
   const calculateAge = (dob) => {
-    const today = new Date();
-    const birtDate = new Date(dob);
+    if (!dob) return "-";
 
-    let age = today.getFullYear() - birtDate.getFullYear();
+    const birthDate = new Date(dob);
+    if (Number.isNaN(birthDate.getTime())) return "-";
+
+    const today = new Date();
+    let age = today.getFullYear() - birthDate.getFullYear();
+    const monthDiff = today.getMonth() - birthDate.getMonth();
+
+    if (
+      monthDiff < 0 ||
+      (monthDiff === 0 && today.getDate() < birthDate.getDate())
+    ) {
+      age -= 1;
+    }
+
     return age;
   };
+
   const months = [
     "",
     "Jan",
@@ -25,19 +38,17 @@ const AppContextProvider = (props) => {
     "Nov",
     "Dec",
   ];
+
   const slotDateFormat = (slotDate) => {
+    if (!slotDate) return "-";
     const dateArray = slotDate.split("_");
-    return (
-      dateArray[0] + " " + months[Number(dateArray[1])] + " " + dateArray[2]
-    );
-  };
-  const value = {
-    calculateAge,
-    slotDateFormat,
+    return `${dateArray[0]} ${months[Number(dateArray[1])]} ${dateArray[2]}`;
   };
 
   return (
-    <AppContext.Provider value={value}>{props.children}</AppContext.Provider>
+    <AppContext.Provider value={{ calculateAge, slotDateFormat }}>
+      {children}
+    </AppContext.Provider>
   );
 };
 

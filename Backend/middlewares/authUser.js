@@ -1,33 +1,18 @@
 const jwt = require("jsonwebtoken");
 
-//user authenication middleware
 const authUser = async (req, res, next) => {
   try {
-    const { token } = req.headers;
+    const token = req.headers.token;
     if (!token) {
-      return res.json({
-        success: false,
-        message: "token not present ",
-      });
+      return res.status(401).json({ success: false, message: "Token missing" });
     }
 
-    // verify token
-
-    // decode the token
-    const decodeToken = jwt.verify(token, process.env.JWT_SECRET);
-    // console.log(decodeToken);
-
-    req.userId = decodeToken.id;
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    req.userId = decoded.id;
     next();
   } catch (error) {
-    console.error(error);
-    res.json({
-      success: false,
-      message: error.message,
-      text: "authUser catch  block",
-    });
+    return res.status(401).json({ success: false, message: error.message });
   }
 };
-module.exports = authUser;
 
-// --------------------------
+module.exports = authUser;

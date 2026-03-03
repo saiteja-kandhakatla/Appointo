@@ -1,36 +1,50 @@
-import React from "react";
 import { assets } from "../assets/assets";
+
 const Contact = () => {
   return (
-    <div>
-      <div className="text-center text-2xl pt-10 text-gray-500">
-        <p>
-          Contact: <span className="text-gray-700 font-semibold">US</span>
-        </p>
+    <section className="mt-10">
+      <div className="mb-8 text-center">
+        <p className="text-xs font-bold tracking-[0.22em] text-emerald-700">CONTACT US</p>
+        <h1 className="mt-2 text-3xl font-extrabold text-slate-900">We are here to help</h1>
       </div>
-      <div className="my-10 flex flex-col justify-content-center md:flex-row gap-10 mb-28 text-sm">
+
+      <div className="grid gap-8 rounded-3xl border border-emerald-100 bg-white p-6 md:grid-cols-[300px_1fr] md:p-8">
         <img
-          className="w-full md:max-w-[360px]"
+          className="h-full w-full rounded-2xl object-cover"
           src={assets.contact_image}
-          alt="contact-Image"
+          alt="Contact Appointo"
         />
-        <div className="flex flex-col justify-center items-start gap-6">
-          <p>OUR OFFICE</p>
-          <p className="font-semibold text-lg text-gray-500">
-            USHODAYA COLONY PLOT NO 90&91 <br />
-            GAJULARAMARAM
-          </p>
-          <p className="text-gray-500">
-            TELPHONE:9441718972 <br />
-          </p>
-          <p className="font-semibold text-lg text-gray-600">
-            contact@gmail.com
-          </p>
-          <p className="text-gray-500">Carres at Appointo</p>
-          <button className="border border-black px-8 py-4 text-sm hover:bg-black hover:text-white transition-all duration-500">Explore Jobs</button>
+
+        <div className="space-y-5 text-sm text-slate-600">
+          <div>
+            <p className="text-xs font-bold tracking-[0.16em] text-slate-500">HEAD OFFICE</p>
+            <p className="mt-2 leading-6">
+              Ushodaya Colony, Plot 90 & 91,
+              <br />
+              Gajularamaram, Hyderabad
+            </p>
+          </div>
+
+          <div>
+            <p className="text-xs font-bold tracking-[0.16em] text-slate-500">SUPPORT</p>
+            <p className="mt-2">+91 94417 18972</p>
+            <p>support@appointo.health</p>
+          </div>
+
+          <div>
+            <p className="text-xs font-bold tracking-[0.16em] text-slate-500">CAREERS</p>
+            <p className="mt-2">Want to shape healthcare experiences with us?</p>
+          </div>
+
+          <button
+            type="button"
+            className="rounded-full border border-slate-300 px-6 py-2.5 text-sm font-semibold text-slate-700 transition hover:border-emerald-600 hover:text-emerald-700"
+          >
+            Explore jobs
+          </button>
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 

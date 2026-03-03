@@ -1,117 +1,113 @@
-import React, { useContext, useState } from "react";
-import { assets } from "../assets/assets";
-import { AdminContext } from "../context/AdminContext";
+import { useContext, useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { AdminContext } from "../context/AdminContext";
 import { DoctorContext } from "../context/DoctorContext";
+
 const Login = () => {
   const [state, setState] = useState("Admin");
-
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const { setAToken, backendUrl } = useContext(AdminContext);
-  //
   const { setDToken } = useContext(DoctorContext);
 
   const onSubmitHandler = async (event) => {
     event.preventDefault();
-    try {
-      if (state == "Admin") {
-        // logic to add admin
-        const { data } = await axios.post(backendUrl + "/api/doctor/login", {
-          email,
-          password,
-        });
-        // console.log({ email, password });
+    setLoading(true);
 
-        if (data.success == true) {
-          // store the data token to local storage
-          localStorage.setItem("aToken", data.token);
-          setAToken(data.token);
-          toast.success("Login Succesfull");
-        } else {
-          // use react toasitfy to get notify
-          toast.error(data.message);
-        }
-      } else {
-        // logic to add doctor
-        const { data } = await axios.post(backendUrl + "/api/doctor/login", {
+    try {
+      if (state === "Admin") {
+        const { data } = await axios.post(`${backendUrl}/api/admin/login`, {
           email,
           password,
         });
-        // console.l
-        if (data.success == true) {
-          // store the data token to local storage
-          localStorage.setItem("dToken", data.token);
-          setDToken(data.token);
-          // console.log(data.token);
-        } else {
-          // use react toasitfy to get notify
+
+        if (!data.success) {
           toast.error(data.message);
+          return;
         }
+
+        localStorage.setItem("aToken", data.token);
+        setAToken(data.token);
+        toast.success("Admin login successful");
+        return;
       }
+
+      const { data } = await axios.post(`${backendUrl}/api/doctor/login`, {
+        email,
+        password,
+      });
+
+      if (!data.success) {
+        toast.error(data.message || "Invalid credentials");
+        return;
+      }
+
+      localStorage.setItem("dToken", data.token);
+      setDToken(data.token);
+      toast.success("Doctor login successful");
     } catch (error) {
-      console.log("Error:");
-      console.log(error.message);
+      toast.error(error.response?.data?.message || error.message);
+    } finally {
+      setLoading(false);
     }
   };
-  //
+
   return (
-    <form onSubmit={onSubmitHandler} className="min-h-[80vh] flex items-center">
-      <div className="flex flex-col gap-3 m-auto items-start p-8 min-w-[340px] sm:min-w-96 border rounded-xl text-[#5E5E5E] text-sm shadow-lg">
-        <p className="text-2xl font-semibold m-auto ">
-          <span className="text-[#5F6FFF]">{state} </span>
-          Login
-        </p>
-        {/* email */}
-        <div className="w-full">
-          <p>Email</p>
+    <section className="mx-auto mt-16 w-[min(92vw,460px)] rounded-3xl border border-sky-100 bg-white p-8 shadow-xl">
+      <p className="text-xs font-bold tracking-[0.2em] text-sky-700">CONTROL CENTER</p>
+      <h1 className="mt-2 text-3xl font-extrabold text-slate-900">
+        {state} sign in
+      </h1>
+      <p className="mt-2 text-sm text-slate-600">
+        Access appointments, doctors, and live activity from one dashboard.
+      </p>
+
+      <form onSubmit={onSubmitHandler} className="mt-6 space-y-4">
+        <label className="block text-sm font-medium text-slate-700">
+          Email
           <input
-            onChange={(e) => setEmail(e.target.value)}
-            value={email}
-            className="border border-[#DADADA] rounded w-full p-2 mt-1"
             type="email"
+            value={email}
+            onChange={(event) => setEmail(event.target.value)}
+            className="mt-1 w-full rounded-xl border border-slate-300 px-3 py-2 outline-none focus:border-sky-500"
             required
           />
-        </div>
-        {/* Password */}
-        <div className="w-full">
-          <p>Password</p>
+        </label>
+
+        <label className="block text-sm font-medium text-slate-700">
+          Password
           <input
-            onChange={(e) => setPassword(e.target.value)}
-            value={password}
-            className="border border-[#DADADA] rounded w-full p-2 mt-1"
             type="password"
+            value={password}
+            onChange={(event) => setPassword(event.target.value)}
+            className="mt-1 w-full rounded-xl border border-slate-300 px-3 py-2 outline-none focus:border-sky-500"
             required
           />
-        </div>
-        <button className="bg-[#5F6FFF] text-white w-full py-2 rounded-md text-base">
-          Login
+        </label>
+
+        <button
+          type="submit"
+          disabled={loading}
+          className="w-full rounded-full bg-sky-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-sky-700 disabled:cursor-not-allowed disabled:opacity-60"
+        >
+          {loading ? "Signing in..." : "Login"}
         </button>
-        {state == "Admin" ? (
-          <p>
-            Doctor Login?
-            <span
-              className="text-[#5F6FFFF] underline cursor-pointer"
-              onClick={() => setState("Doctor")}
-            >
-              Click here
-            </span>
-          </p>
-        ) : (
-          <p>
-            Admin Login?
-            <span
-              className="text-[#5F6FFFF] underline cursor-pointer"
-              onClick={() => setState("Admin")}
-            >
-              Click here
-            </span>
-          </p>
-        )}
-      </div>
-    </form>
+      </form>
+
+      <p className="mt-4 text-sm text-slate-600">
+        {state === "Admin" ? "Need Doctor login?" : "Need Admin login?"}{" "}
+        <button
+          type="button"
+          onClick={() => setState((prev) => (prev === "Admin" ? "Doctor" : "Admin"))}
+          className="font-semibold text-sky-700 underline"
+        >
+          Switch now
+        </button>
+      </p>
+    </section>
   );
 };
 

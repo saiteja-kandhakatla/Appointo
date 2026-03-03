@@ -1,76 +1,61 @@
-import React from "react";
 import { assets } from "../assets/assets";
 
 const About = () => {
   return (
-    <div>
-      <div className="text-center text-2xl pt-10 text-gray-500">
-        <p>
-          About <span className="text-gray-700 font-medium">US</span>
-        </p>
+    <section className="mt-10">
+      <div className="mb-8 text-center">
+        <p className="text-xs font-bold tracking-[0.22em] text-emerald-700">ABOUT APPOINTO</p>
+        <h1 className="mt-2 text-3xl font-extrabold text-slate-900">A smarter way to access care</h1>
       </div>
-      {/* Left side img */}
-      <div className="my-10 flex flex-col md:flex-row gap-12">
+
+      <div className="grid gap-8 rounded-3xl border border-emerald-100 bg-white p-6 md:grid-cols-[300px_1fr] md:p-8">
         <img
-          className="w-full md:max-w-[360px]"
+          className="h-full w-full rounded-2xl object-cover"
           src={assets.about_image}
-          alt="AboutImage"
+          alt="About Appointo"
         />
-        <div className="flex flex-col jusitify-center gap-6 md:-w-2/4 text-sm text-gray-600">
+
+        <div className="space-y-4 text-sm leading-7 text-slate-600">
           <p>
-            Welcome to Prescripto, your trusted partner in managing your
-            healthcare needs conveniently and efficiently. At Prescripto, we
-            understand the challenges individuals face when it comes to
-            scheduling doctor appointments and managing their health records.
+            Appointo simplifies how patients connect with healthcare providers.
+            We remove friction from searching, comparing, and booking.
           </p>
           <p>
-            Prescripto is committed to excellence in healthcare technology. We
-            continuously strive to enhance our platform, integrating the latest
-            advancements to improve user experience and deliver superior
-            service. Whether you're booking your first appointment or managing
-            ongoing care, Prescripto is here to support you every step of the
-            way
+            The platform is built for speed and trust: clear doctor profiles,
+            transparent fees, and straightforward appointment management.
           </p>
-          <b className="text-gray-800">Our Vision</b>
           <p>
-            Our vision at Prescripto is to create a seamless healthcare
-            experience for every user. We aim to bridge the gap between patients
-            and healthcare providers, making it easier for you to access the
-            care you need, when you need it.
+            Our goal is practical healthcare access for everyone, with a booking
+            experience that feels modern and reliable.
           </p>
         </div>
       </div>
-      {/*  */}
-      <div className="text-xl my-4">
-        <p>
-          WHy <span className="text-gray-700 font-semibold">CHOOSE US</span>
-        </p>
+
+      <div className="mt-8 grid gap-4 md:grid-cols-3">
+        {[
+          {
+            title: "Efficient",
+            desc: "Book in minutes with real-time doctor availability.",
+          },
+          {
+            title: "Reliable",
+            desc: "Profiles are structured so you can choose with confidence.",
+          },
+          {
+            title: "Personal",
+            desc: "Manage your appointments and profile in one secure place.",
+          },
+        ].map((item) => (
+          <article
+            key={item.title}
+            className="rounded-2xl border border-emerald-100 bg-white p-5"
+          >
+            <h2 className="text-lg font-bold text-slate-900">{item.title}</h2>
+            <p className="mt-2 text-sm text-slate-600">{item.desc}</p>
+          </article>
+        ))}
       </div>
-      {/* 3 colums */}
-      <div className="flex flex-col md:flex-row mb-20">
-        <div className="border px-10 md:px-16 sm:py-16 flex flex-col gap-5 text-[15px] hover:bg-indigo-500 hover:text-white transition-all duration-300 text-grat-600 cursor-pointer">
-          <b>Efficiency:</b>
-          <p>
-            Streamlined appointment scheduling that fits into your busy
-            lifestyle.
-          </p>
-        </div>
-        <div className="border px-10 md:px-16 sm:py-16 flex flex-col gap-5 text-[15px] hover:bg-indigo-500 hover:text-white transition-all duration-300 text-grat-600 cursor-pointer">
-          <b>Convenience:</b>
-          <p>
-            Access to a network of trusted healthcare professionals in your
-            area.
-          </p>
-        </div>
-        <div className="border px-10 md:px-16 sm:py-16 flex flex-col gap-5 text-[15px] hover:bg-indigo-500 hover:text-white transition-all duration-300 text-grat-600 cursor-pointer">
-          <b>Personalization:</b>
-          <p>
-            Tailored recommendations and reminders to help you stay on top of
-            your health
-          </p>
-        </div>
-      </div>
-    </div>
+    </section>
   );
 };
 

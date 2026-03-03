@@ -1,5 +1,5 @@
-import React, { useContext, useEffect } from "react";
-import AdminContextProvider, { AdminContext } from "../../context/AdminContext";
+import { useContext, useEffect } from "react";
+import { AdminContext } from "../../context/AdminContext";
 
 const DoctorsList = () => {
   const { doctors, aToken, getAllDoctors, changeAvailablity } =
@@ -10,38 +10,41 @@ const DoctorsList = () => {
       getAllDoctors();
     }
   }, [aToken]);
+
   return (
-    <div className="m-5 max-h-[90vh] overflow-y-scroll">
-      <h1 className="text-lg font-medium ">All Doctors</h1>
-      <div className="w-full flex flex-wrap gap-4 pt-5 gap-y-6">
-        {doctors.map((item, index) => (
-          <div
-            className="border border-indigo-200 rounded-xl max-w-56 overflow-hidden cursor-pointer group"
-            key={index}
+    <section className="panel p-5 md:p-6">
+      <h1 className="mb-4 text-2xl font-extrabold text-slate-900">Doctors</h1>
+
+      <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+        {doctors.map((doctor) => (
+          <article
+            key={doctor._id}
+            className="overflow-hidden rounded-2xl border border-sky-100 bg-white"
           >
-            <img
-              className="bg-indigo-50 group-hover:bg-[#5F6FFF] transition-all duration-500"
-              src={item.image}
-              alt=""
-            />
-            <div className="p-4 ">
-              <p className="text-neutral-800 text-lg font-medium">
-                {item.name}
-              </p>
-              <p className="text-zinc-600 font-sm">{item.speciality}</p>
-              <div className="mt-2 flex items-center gap-1 text-sm">
-                <input
-                  onChange={() => changeAvailablity(item._id)}
-                  type="checkbox"
-                  checked={item.available}
-                />
-                <p>Available</p>
-              </div>
+            <div className="bg-sky-50 p-2">
+              <img
+                className="h-52 w-full rounded-xl object-cover"
+                src={doctor.image}
+                alt={doctor.name}
+              />
             </div>
-          </div>
+            <div className="p-4">
+              <p className="text-lg font-bold text-slate-900">{doctor.name}</p>
+              <p className="text-sm text-slate-600">{doctor.speciality}</p>
+
+              <label className="mt-3 inline-flex items-center gap-2 text-sm font-medium text-slate-700">
+                <input
+                  type="checkbox"
+                  checked={doctor.available}
+                  onChange={() => changeAvailablity(doctor._id)}
+                />
+                Available
+              </label>
+            </div>
+          </article>
         ))}
       </div>
-    </div>
+    </section>
   );
 };
 

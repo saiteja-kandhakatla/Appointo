@@ -1,71 +1,76 @@
-import React, { useContext, useEffect } from "react";
+import { useContext, useEffect } from "react";
 import { AdminContext } from "../../context/AdminContext";
 import { AppContext } from "../../context/AppContext";
-import { assets } from "../../assets/assets";
 
 const AllAppointments = () => {
   const { aToken, appointments, getAllAppointments, cancelAppointment } =
     useContext(AdminContext);
   const { calculateAge, slotDateFormat } = useContext(AppContext);
+
   useEffect(() => {
     if (aToken) {
       getAllAppointments();
     }
   }, [aToken]);
+
   return (
-    <div className="w-full max-w-6xl m-5">
-      <p className="mb-3 text-lg font-medium">All Appointments</p>
+    <section className="panel p-4 md:p-6">
+      <h1 className="mb-4 text-2xl font-extrabold text-slate-900">All appointments</h1>
 
-      <div className="bg-white border rounded text-sm max-h-[80vh] min-h-[60vh] overflow-y-scroll hide-scrollbar">
-        {/* Table Header */}
-        <div className="hidden sm:grid grid-cols-[0.5fr_3fr_1fr_3fr_3fr_1fr_1fr] grid-flow-col py-3 px-6 border-b font-medium">
-          <p>#</p>
-          <p>Patient</p>
-          <p>Age</p>
-          <p>Date & Time</p>
-          <p>Doctor</p>
-          <p>Fees</p>
-          <p>Actions</p>
-        </div>
-
-        {/* Table Rows */}
-        {appointments.map((item, index) => (
-          <div
-            className="grid sm:grid-cols-[0.5fr_3fr_1fr_3fr_3fr_1fr_1fr] grid-cols-1 justify-between items-center text-gray-600 py-3 px-6 border-b hover:bg-gray-50 max-sm:gap-2"
-            key={index}
-          >
-            <p className="max-sm:hidden">{index + 1}</p>
-
-            {/* Patient info */}
-            <div className="flex items-center gap-2">
-              <img
-                className="w-8 h-8 rounded-full object-cover"
-                src={item.userData.image}
-                alt={item.userData.name}
-              />
-              <p>{item.userData.name}</p>
-            </div>
-
-            <p>{calculateAge(item.userData.dob)}</p>
-            <p>
-              {slotDateFormat(item.slotDate)} - {item.slotTime}
-            </p>
-            <p>{item.docData.name}</p>
-            <p>₹{item.amount}</p>
-            {item.cancelled ? (
-              <p className="text-red-400 text-xs font-medium">Cancelled</p>
-            ) : (
-              <img
-                onClick={() => cancelAppointment(item._id)}
-                className="w-10 cursor-pointer"
-                src={assets.cancel_icon}
-                alt="cancel icon"
-              />
-            )}
-          </div>
-        ))}
+      <div className="overflow-x-auto">
+        <table className="w-full min-w-[900px] text-left text-sm">
+          <thead>
+            <tr className="border-b border-sky-100 text-slate-600">
+              <th className="py-3 pr-3">#</th>
+              <th className="py-3 pr-3">Patient</th>
+              <th className="py-3 pr-3">Age</th>
+              <th className="py-3 pr-3">Date & Time</th>
+              <th className="py-3 pr-3">Doctor</th>
+              <th className="py-3 pr-3">Fee</th>
+              <th className="py-3">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {appointments.map((item, index) => (
+              <tr key={item._id} className="border-b border-slate-100">
+                <td className="py-3 pr-3 text-slate-600">{index + 1}</td>
+                <td className="py-3 pr-3">
+                  <div className="flex items-center gap-2">
+                    <img
+                      className="h-8 w-8 rounded-full object-cover"
+                      src={item.userData.image}
+                      alt={item.userData.name}
+                    />
+                    <span className="font-medium text-slate-800">{item.userData.name}</span>
+                  </div>
+                </td>
+                <td className="py-3 pr-3 text-slate-600">{calculateAge(item.userData.dob)}</td>
+                <td className="py-3 pr-3 text-slate-600">
+                  {slotDateFormat(item.slotDate)} • {item.slotTime}
+                </td>
+                <td className="py-3 pr-3 text-slate-700">{item.docData.name}</td>
+                <td className="py-3 pr-3 font-medium text-slate-900">₹{item.amount}</td>
+                <td className="py-3">
+                  {item.cancelled ? (
+                    <span className="rounded-full bg-red-50 px-3 py-1 text-xs font-semibold text-red-600">
+                      Cancelled
+                    </span>
+                  ) : (
+                    <button
+                      type="button"
+                      onClick={() => cancelAppointment(item._id)}
+                      className="rounded-full border border-red-200 px-3 py-1 text-xs font-semibold text-red-600 hover:bg-red-50"
+                    >
+                      Cancel
+                    </button>
+                  )}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
-    </div>
+    </section>
   );
 };
 

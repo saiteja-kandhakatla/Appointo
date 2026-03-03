@@ -1,134 +1,128 @@
-import React, { useContext, useEffect, useState } from "react";
-import { AppContext } from "../context/AppContext";
+import { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import { AppContext } from "../context/AppContext";
 
 const Login = () => {
   const { backendUrl, token, setToken } = useContext(AppContext);
-  const [state, setState] = useState("Sign Up");
+  const navigate = useNavigate();
+
+  const [authMode, setAuthMode] = useState("signup");
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [name, setName] = useState("");
   const [loading, setLoading] = useState(false);
-  const navigate = useNavigate();
-  const onSubmitHandler = async (event) => {
-    event.preventDefault();
-    setLoading(true);
 
-    try {
-      const endpoint =
-        state === "Sign Up"
-          ? `${backendUrl}/api/user/register-user`
-          : `${backendUrl}/api/user/login`;
-
-      const payload =
-        state === "Sign Up" ? { name, email, password } : { email, password };
-
-      const { data } = await axios.post(endpoint, payload);
-
-      if (data.success) {
-        localStorage.setItem("token", data.token);
-        setToken(data.token);
-        toast.success(`${state} successful!`);
-      } else {
-        toast.error(data.message || "Something went wrong!");
-      }
-    } catch (err) {
-      toast.error(err.response?.data?.message || err.message);
-    } finally {
-      setLoading(false);
-    }
-  };
   useEffect(() => {
     if (token) {
       navigate("/");
     }
-  }, [token]);
-  return (
-    <form className="min-h-[80vh] flex items-center" onSubmit={onSubmitHandler}>
-      <div className="flex flex-col gap-3 m-auto items-start p-8 min-w-[340px] sm:min-w-96 border rounded-xl text-zinc-600 text-sm shadow-lg">
-        <p className="text-2xl font-semibold">
-          {state === "Sign Up" ? "Create Account" : "Login"}
-        </p>
-        <p>
-          Please {state === "Sign Up" ? "Sign up" : "log in"} to book your
-          appointment.
-        </p>
+  }, [token, navigate]);
 
-        {state === "Sign Up" && (
-          <div className="w-full">
-            <p>Full Name</p>
+  const onSubmit = async (event) => {
+    event.preventDefault();
+    setLoading(true);
+
+    try {
+      const isSignup = authMode === "signup";
+      const endpoint = isSignup
+        ? `${backendUrl}/api/user/register-user`
+        : `${backendUrl}/api/user/login`;
+
+      const payload = isSignup
+        ? { name: name.trim(), email: email.trim(), password }
+        : { email: email.trim(), password };
+
+      const { data } = await axios.post(endpoint, payload);
+
+      if (!data.success) {
+        toast.error(data.message || "Authentication failed.");
+        return;
+      }
+
+      localStorage.setItem("token", data.token);
+      setToken(data.token);
+      toast.success(isSignup ? "Account created" : "Logged in successfully");
+    } catch (error) {
+      toast.error(error.response?.data?.message || error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <section className="mx-auto mt-14 max-w-xl rounded-3xl border border-emerald-100 bg-white p-7 shadow-sm md:p-10">
+      <p className="text-xs font-bold tracking-[0.22em] text-emerald-700">
+        {authMode === "signup" ? "JOIN APPOINTO" : "WELCOME BACK"}
+      </p>
+      <h1 className="mt-2 text-3xl font-extrabold text-slate-900">
+        {authMode === "signup" ? "Create your account" : "Sign in to continue"}
+      </h1>
+      <p className="mt-2 text-sm text-slate-600">
+        Secure your appointment history and manage bookings in one place.
+      </p>
+
+      <form className="mt-6 space-y-4" onSubmit={onSubmit}>
+        {authMode === "signup" && (
+          <label className="block text-sm font-medium text-slate-700">
+            Full name
             <input
               type="text"
-              placeholder="Enter your name"
-              onChange={(e) => setName(e.target.value)}
-              className="border border-zinc-300 rounded w-full p-2 mt-1"
+              className="mt-1 w-full rounded-xl border border-slate-300 px-3 py-2 outline-none focus:border-emerald-500"
               value={name}
+              onChange={(event) => setName(event.target.value)}
               required
             />
-          </div>
+          </label>
         )}
 
-        <div className="w-full">
-          <p>Email</p>
+        <label className="block text-sm font-medium text-slate-700">
+          Email
           <input
             type="email"
-            placeholder="Enter your email"
-            onChange={(e) => setEmail(e.target.value)}
-            className="border border-zinc-300 rounded w-full p-2 mt-1"
+            className="mt-1 w-full rounded-xl border border-slate-300 px-3 py-2 outline-none focus:border-emerald-500"
             value={email}
+            onChange={(event) => setEmail(event.target.value)}
             required
           />
-        </div>
+        </label>
 
-        <div className="w-full">
-          <p>Password</p>
+        <label className="block text-sm font-medium text-slate-700">
+          Password
           <input
             type="password"
-            placeholder="Enter your password"
-            onChange={(e) => setPassword(e.target.value)}
-            className="border border-zinc-300 rounded w-full p-2 mt-1"
+            className="mt-1 w-full rounded-xl border border-slate-300 px-3 py-2 outline-none focus:border-emerald-500"
             value={password}
+            onChange={(event) => setPassword(event.target.value)}
             required
           />
-        </div>
+        </label>
 
         <button
           type="submit"
           disabled={loading}
-          className="bg-indigo-500 text-white w-full py-2 rounded-md text-base disabled:opacity-50"
+          className="w-full rounded-full bg-emerald-600 px-4 py-3 text-sm font-semibold text-white transition hover:bg-emerald-700 disabled:cursor-not-allowed disabled:opacity-60"
         >
           {loading
             ? "Please wait..."
-            : state === "Sign Up"
-            ? "Create Account"
+            : authMode === "signup"
+            ? "Create account"
             : "Login"}
         </button>
+      </form>
 
-        {state === "Sign Up" ? (
-          <p>
-            Already have an account?{" "}
-            <span
-              className="text-indigo-500 underline cursor-pointer"
-              onClick={() => setState("Login")}
-            >
-              Login here
-            </span>
-          </p>
-        ) : (
-          <p>
-            Create a new account?{" "}
-            <span
-              className="text-indigo-500 underline cursor-pointer"
-              onClick={() => setState("Sign Up")}
-            >
-              Click here
-            </span>
-          </p>
-        )}
-      </div>
-    </form>
+      <p className="mt-4 text-sm text-slate-600">
+        {authMode === "signup" ? "Already have an account?" : "Need a new account?"}{" "}
+        <button
+          type="button"
+          className="font-semibold text-emerald-700 underline"
+          onClick={() => setAuthMode((prev) => (prev === "signup" ? "login" : "signup"))}
+        >
+          {authMode === "signup" ? "Login" : "Create account"}
+        </button>
+      </p>
+    </section>
   );
 };
 

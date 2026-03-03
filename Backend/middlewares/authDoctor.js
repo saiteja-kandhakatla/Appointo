@@ -1,34 +1,18 @@
 const jwt = require("jsonwebtoken");
 
-//doctor authenication middleware
 const authDoctor = async (req, res, next) => {
   try {
-    const { dtoken } = req.headers;
-    if (!dtoken) {
-      return res.json({
-        success: false,
-        message: "token not present ",
-      });
+    const token = req.headers.dtoken;
+    if (!token) {
+      return res.status(401).json({ success: false, message: "Token missing" });
     }
 
-    // verify token
-
-    // decode the token
-    const decodeToken = jwt.verify(dtoken, process.env.JWT_SECRET);
-    // console.log(decodeToken);
-
-    req.docId = decodeToken.id;
-    console.log(decodeToken.id);
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    req.docId = decoded.id;
     next();
   } catch (error) {
-    console.error(error);
-    res.json({
-      success: false,
-      message: error.message,
-      text: "authDoctor catch  block",
-    });
+    return res.status(401).json({ success: false, message: error.message });
   }
 };
-module.exports = authDoctor;
 
-// --------------------------
+module.exports = authDoctor;

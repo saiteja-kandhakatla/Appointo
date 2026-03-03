@@ -1,38 +1,25 @@
 const jwt = require("jsonwebtoken");
 
-//admin authenication middleware
 const authAdmin = async (req, res, next) => {
   try {
-    const { atoken } = req.headers;
-    if (!atoken) {
-      return res.json({
-        success: false,
-        message: "token not present ",
-      });
+    const token = req.headers.atoken;
+    if (!token) {
+      return res.status(401).json({ success: false, message: "Token missing" });
     }
 
-    // verify token
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const adminKey = `${process.env.ADMIN_EMAIL}${process.env.ADMIN_PASSWORD}`;
 
-    // decode the token
-    const decodeToken = jwt.verify(atoken, process.env.JWT_SECRET);
-    const key = process.env.ADMIN_EMAIL + process.env.ADMIN_PASSWORD;
-    if (decodeToken !== key) {
-      return res.json({
-        success: false,
-        text: "Not a valid email",
-        message: "Not Authorized login again",
-      });
+    if (decoded !== adminKey) {
+      return res
+        .status(401)
+        .json({ success: false, message: "Not authorized" });
     }
+
     next();
   } catch (error) {
-    console.error(error);
-    res.json({
-      success: false,
-      message: error.message,
-      text: "authAdmin catch  block",
-    });
+    return res.status(401).json({ success: false, message: error.message });
   }
 };
-module.exports = authAdmin;
 
-// --------------------------
+module.exports = authAdmin;

@@ -1,39 +1,45 @@
-import React, { useContext } from "react";
+import { useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import { assets } from "../assets/assets";
 import { AdminContext } from "../context/AdminContext";
-import { useNavigate } from "react-router-dom";
-import { AppContext } from "../context/AppContext";
-const NavBar = () => {
-  const { aToken, setAToken } = useContext(AdminContext);
-  const { dToken, setDToken } = useContext(AppContext);
-  const navigate = useNavigate();
-  const logout = () => {
-    navigate("/");
-    aToken && setAToken("");
-    aToken && localStorage.removeItem("aToken");
+import { DoctorContext } from "../context/DoctorContext";
 
-    dToken && setDToken("");
-    dToken && localStorage.removeItem("dToken");
+const NavBar = () => {
+  const navigate = useNavigate();
+  const { aToken, setAToken } = useContext(AdminContext);
+  const { dToken, setDToken } = useContext(DoctorContext);
+
+  const logout = () => {
+    if (aToken) {
+      setAToken("");
+      localStorage.removeItem("aToken");
+    }
+
+    if (dToken) {
+      setDToken("");
+      localStorage.removeItem("dToken");
+    }
+
+    navigate("/");
   };
+
   return (
-    <div className="flex justify-between items-center px-4 sm:px-10 py-3 border-b bg-white">
-      <div className="flex items-center gap-2 text-xs">
-        <img
-          className="w-36 sm:w-40 cursor-pointer"
-          src={assets.admin_logo}
-          alt="admin logo"
-        />
-        <p className="border px-2.5 py-0.5 rounded-full border-gray-500 text-gray-600">
-          {aToken ? "Admin" : "Doctor"}
-        </p>
+    <header className="panel flex flex-wrap items-center justify-between gap-3 px-4 py-3 md:px-6">
+      <div className="flex items-center gap-3">
+        <img className="w-36 sm:w-40" src={assets.admin_logo} alt="Admin logo" />
+        <span className="rounded-full bg-sky-50 px-3 py-1 text-xs font-semibold text-sky-700">
+          {aToken ? "Admin panel" : "Doctor panel"}
+        </span>
       </div>
+
       <button
+        type="button"
+        className="rounded-full bg-slate-900 px-5 py-2 text-sm font-semibold text-white transition hover:bg-slate-700"
         onClick={logout}
-        className="bg-[#5F6FFF] text-white text-sm px-10 py-2 rounded-full"
       >
         Logout
       </button>
-    </div>
+    </header>
   );
 };
 

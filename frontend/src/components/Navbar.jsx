@@ -1,147 +1,194 @@
-import React, { useContext, useState } from "react";
-import { assets } from "../assets/assets";
+import { useContext, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
+import { assets } from "../assets/assets";
 import { AppContext } from "../context/AppContext";
+
+const navItems = [
+  { label: "Home", path: "/" },
+  { label: "Doctors", path: "/doctors" },
+  { label: "About", path: "/about" },
+  { label: "Contact", path: "/contact" },
+];
+
 const Navbar = () => {
   const navigate = useNavigate();
-  const [showMenu, setShowMenu] = useState(false);
   const { token, setToken, userData } = useContext(AppContext);
+  const [showMenu, setShowMenu] = useState(false);
 
-  const [showDropdown, setShowDropdown] = useState(false);
   const logOut = () => {
     setToken(false);
     localStorage.removeItem("token");
+    navigate("/");
   };
+
   return (
-    <div className="flex items-center justify-between text-sm py-4 mb-5 border-b border-b-gray-400">
-      <img
-        onClick={() => navigate("/")}
-        className="w-44 cursor-pointer"
-        src={assets.logo}
-        alt="logo"
-      />
-      <ul className="hidden md:flex items-start gap-5 font-medium ">
-        <NavLink to="/">
-          <li className="py-1">HOME</li>
-          <hr className="border-none outline-none h-0.5 bg-indigo-500 w-3/5 m-auto hidden" />
-        </NavLink>
-        <NavLink to="/doctors">
-          <li className="py-1">ALL DOCTORS</li>
-          <hr className="border-none outline-none h-0.5 bg-indigo-500 w-3/5 m-auto hidden" />
-        </NavLink>
-        <NavLink to="/about">
-          <li className="py-1">ABOUT</li>
-          <hr className="border-none outline-none h-0.5 bg-indigo-500 w-3/5 m-auto hidden" />
-        </NavLink>
-        <NavLink to="/contact">
-          <li className="py-1">Contact</li>
-          <hr className="border-none outline-none h-0.5 bg-indigo-500 w-3/5 m-auto hidden" />
-        </NavLink>
-      </ul>
-      <div className="flex items-center gap-4">
-        {token ? (
-          <div className="flex items-center gap-2 cursor-pointer group relative ">
-            <img
-              className="w-8 rounded-full"
-              src={userData.image ? userData.image : assets.profile_pic}
-              alt="profilePic"
-            />
-            <img
-              className="w-2.5 "
-              src={assets.dropdown_icon}
-              alt="dropDownicon"
-            />
-            <div className="absolute top-0 right-0 pt-14 text-base font-medium text-gray-600 z-20 hidden group-hover:block">
-              <div className="min-w-48 bg-stone-100 rounded flex flex-col gap-4 p-4">
-                <p
-                  className="hover:text-black cursor-pointer "
+    <header className="sticky top-2 z-30 rounded-2xl border border-emerald-100 bg-white/85 px-4 py-3 backdrop-blur md:px-6">
+      <div className="flex items-center justify-between gap-4">
+        <button
+          type="button"
+          className="cursor-pointer"
+          onClick={() => navigate("/")}
+        >
+          <img className="w-36 md:w-40" src={assets.logo} alt="Appointo logo" />
+        </button>
+
+        <nav className="hidden items-center gap-2 md:flex">
+          {navItems.map((item) => (
+            <NavLink
+              key={item.path}
+              to={item.path}
+              className={({ isActive }) =>
+                `rounded-full px-4 py-2 text-sm font-semibold transition ${
+                  isActive
+                    ? "bg-emerald-600 text-white"
+                    : "text-slate-700 hover:bg-emerald-50"
+                }`
+              }
+            >
+              {item.label}
+            </NavLink>
+          ))}
+        </nav>
+
+        <div className="hidden items-center gap-3 md:flex">
+          {token ? (
+            <div className="group relative">
+              <button
+                type="button"
+                className="flex items-center gap-2 rounded-full border border-emerald-100 bg-emerald-50 p-1 pr-3"
+              >
+                <img
+                  className="h-9 w-9 rounded-full object-cover"
+                  src={userData?.image || assets.profile_pic}
+                  alt="User profile"
+                />
+                <span className="text-sm font-semibold text-slate-700">
+                  {userData?.name?.split(" ")[0] || "Account"}
+                </span>
+                <img className="w-3" src={assets.dropdown_icon} alt="Menu" />
+              </button>
+              <div className="pointer-events-none absolute right-0 top-12 hidden min-w-52 rounded-xl border border-emerald-100 bg-white p-2 shadow-xl group-hover:pointer-events-auto group-hover:block">
+                <button
+                  type="button"
+                  className="block w-full rounded-lg px-3 py-2 text-left text-sm hover:bg-emerald-50"
                   onClick={() => navigate("/my-profile")}
                 >
-                  My Profle
-                </p>
-                <p
-                  className="hover:text-black cursor-pointer "
+                  My Profile
+                </button>
+                <button
+                  type="button"
+                  className="block w-full rounded-lg px-3 py-2 text-left text-sm hover:bg-emerald-50"
                   onClick={() => navigate("/my-appointments")}
                 >
                   My Appointments
-                </p>
-                <p
-                  className="hover:text-black cursor-pointer "
+                </button>
+                <button
+                  type="button"
+                  className="block w-full rounded-lg px-3 py-2 text-left text-sm text-red-600 hover:bg-red-50"
                   onClick={logOut}
                 >
-                  Log Out
-                </p>
+                  Log out
+                </button>
               </div>
             </div>
-          </div>
-        ) : (
-          <button
-            className="bg-indigo-500 text-white px-8 py-3 rounded-full font-light hidden:md-block"
-            onClick={() => {
-              navigate("/login");
-            }}
-          >
-            Create Account
-          </button>
-        )}
-        <img
-          onClick={() => setShowMenu(true)}
-          className="w-6 md:hidden"
-          src={assets.menu_icon}
-          alt=""
-        />
-        {/* mobile menu */}
-        <div
-          className={`${
-            showMenu ? "fixed w-full" : "h-0 w-0"
-          } md:hidden right-0 top-0 bottom-0 z-20 overflow-hidden bg-white transition-all`}
-        >
-          <div className="flex items-center justify-between px-5 py-6">
-            <img className="w-36" src={assets.logo} alt="" />
-            <img
-              className="w-7"
-              onClick={() => setShowMenu(false)}
-              src={assets.cross_icon}
-              alt=""
-            />
-          </div>
-          <ul className="flex flex-col items-center gap-2 mt-5 px-5 font-medium text-lg">
-            <NavLink
-              onClick={() => {
-                setShowMenu(false);
-              }}
-              to="/"
+          ) : (
+            <button
+              type="button"
+              className="rounded-full bg-emerald-600 px-5 py-2 text-sm font-semibold text-white transition hover:bg-emerald-700"
+              onClick={() => navigate("/login")}
             >
-              <p className="px-4 py-2 rounded inline-block">Home</p>
-            </NavLink>
-            <NavLink
-              onClick={() => {
-                setShowMenu(false);
-              }}
-              to="/doctors"
-            >
-              <p className="px-4 py-2 rounded inline-block"> All doctors</p>
-            </NavLink>
-            <NavLink
-              onClick={() => {
-                setShowMenu(false);
-              }}
-              to="/about"
-            >
-              <p className="px-4 py-2 rounded inline-block">About</p>
-            </NavLink>
-            <NavLink
-              onClick={() => {
-                setShowMenu(false);
-              }}
-              to="/contact"
-            >
-              <p className="px-4 py-2 rounded inline-block">Contact</p>{" "}
-            </NavLink>
-          </ul>
+              Create account
+            </button>
+          )}
         </div>
+
+        <button
+          type="button"
+          className="rounded-lg border border-emerald-100 p-2 md:hidden"
+          onClick={() => setShowMenu(true)}
+        >
+          <img className="w-5" src={assets.menu_icon} alt="Open menu" />
+        </button>
       </div>
-    </div>
+
+      {showMenu && (
+        <div className="fixed inset-0 z-40 bg-slate-900/40 md:hidden">
+          <div className="ml-auto h-full w-4/5 max-w-xs bg-white p-5 shadow-2xl">
+            <div className="mb-6 flex items-center justify-between">
+              <img className="w-32" src={assets.logo} alt="Appointo logo" />
+              <button type="button" onClick={() => setShowMenu(false)}>
+                <img className="w-6" src={assets.cross_icon} alt="Close menu" />
+              </button>
+            </div>
+
+            <div className="space-y-2">
+              {navItems.map((item) => (
+                <NavLink
+                  key={item.path}
+                  to={item.path}
+                  onClick={() => setShowMenu(false)}
+                  className={({ isActive }) =>
+                    `block rounded-lg px-3 py-2 text-sm font-medium ${
+                      isActive ? "bg-emerald-600 text-white" : "hover:bg-emerald-50"
+                    }`
+                  }
+                >
+                  {item.label}
+                </NavLink>
+              ))}
+            </div>
+
+            <div className="mt-6 border-t border-slate-200 pt-4">
+              {token ? (
+                <>
+                  <button
+                    type="button"
+                    className="mb-2 block w-full rounded-lg px-3 py-2 text-left text-sm hover:bg-emerald-50"
+                    onClick={() => {
+                      navigate("/my-profile");
+                      setShowMenu(false);
+                    }}
+                  >
+                    My Profile
+                  </button>
+                  <button
+                    type="button"
+                    className="mb-2 block w-full rounded-lg px-3 py-2 text-left text-sm hover:bg-emerald-50"
+                    onClick={() => {
+                      navigate("/my-appointments");
+                      setShowMenu(false);
+                    }}
+                  >
+                    My Appointments
+                  </button>
+                  <button
+                    type="button"
+                    className="block w-full rounded-lg px-3 py-2 text-left text-sm text-red-600 hover:bg-red-50"
+                    onClick={() => {
+                      logOut();
+                      setShowMenu(false);
+                    }}
+                  >
+                    Log out
+                  </button>
+                </>
+              ) : (
+                <button
+                  type="button"
+                  className="w-full rounded-full bg-emerald-600 px-4 py-2 text-sm font-semibold text-white"
+                  onClick={() => {
+                    navigate("/login");
+                    setShowMenu(false);
+                  }}
+                >
+                  Create account
+                </button>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+    </header>
   );
 };
 

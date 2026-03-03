@@ -1,48 +1,48 @@
-import React from "react";
+import { Link } from "react-router-dom";
 import { assets } from "../assets/assets";
 
 const Footer = () => {
   return (
-    <div className="md:mx-10">
-      <div className="flex flex-col sm:grid grid-cols-[3fr_1fr_1fr] gap-14 my-10 mt-40 text-sm">
-        {/* ------left section */}
+    <footer className="mt-20 rounded-3xl border border-emerald-100 bg-white/90 p-8 shadow-sm">
+      <div className="grid gap-8 md:grid-cols-[2fr_1fr_1fr]">
         <div>
-          <img className="mb-5 w-40" src={assets.logo} alt="logo" />
-          <p className="w-full md:w-2/3 text-gray-600 leading-6 ">
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptates
-            esse saepe, sunt asperiores voluptatem eius nemo molestiae expedita
-            enim omnis?
+          <img className="mb-4 w-40" src={assets.logo} alt="Appointo logo" />
+          <p className="max-w-md text-sm leading-6 text-slate-600">
+            Appointo helps you find trusted doctors, compare specialties, and
+            secure appointments without waiting on calls.
           </p>
         </div>
 
-        {/* ------middle section */}
         <div>
-          <p className="text-xl font-medium mb-5">Company</p>
-          <ul className="flex flex-col gap-2 text-grya-600">
-            <li>Home</li>
-            <li>About Us</li>
-            <li>Contact Us</li>
-            <li>Privacy Policy</li>
-          </ul>
+          <p className="mb-3 text-base font700 font-semibold text-slate-800">Company</p>
+          <div className="space-y-2 text-sm text-slate-600">
+            <Link className="block hover:text-emerald-700" to="/">
+              Home
+            </Link>
+            <Link className="block hover:text-emerald-700" to="/about">
+              About
+            </Link>
+            <Link className="block hover:text-emerald-700" to="/contact">
+              Contact
+            </Link>
+            <p>Privacy Policy</p>
+          </div>
         </div>
 
-        {/* ------right section */}
         <div>
-          <p className="text-xl font-medium mb-5">Get In touch</p>
-          <ul className="flex flex-col gap-2 text-grya-600">
-            <li>+1-223-442-244</li>
-            <li>xyz@gmail.com</li>
-          </ul>
+          <p className="mb-3 text-base font-semibold text-slate-800">Get in touch</p>
+          <div className="space-y-2 text-sm text-slate-600">
+            <p>+91 94417 18972</p>
+            <p>support@appointeo.health</p>
+            <p>Mon - Sat, 8:00 AM to 8:00 PM</p>
+          </div>
         </div>
       </div>
-      {/* ----------copyright text ------ */}
-      <div>
-        <hr />
-        <p className="py-5 text-sm text-center">
-          CopyRight Lorem, ipsum dolor.
-        </p>
+
+      <div className="mt-8 border-t border-emerald-100 pt-4 text-center text-xs text-slate-500">
+        Copyright {new Date().getFullYear()} Appointo. All rights reserved.
       </div>
-    </div>
+    </footer>
   );
 };
 

@@ -1,63 +1,64 @@
-import { useState } from "react";
-import { createContext } from "react";
+import { createContext, useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
+
 export const DoctorContext = createContext();
-const DoctorContextProvider = (props) => {
+
+const DoctorContextProvider = ({ children }) => {
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
-  // const [dToken, setDToken] = useState("");
-  const [dToken, setDToken] = useState(
-    localStorage.getItem("dToken") ? localStorage.getItem("dToken") : ""
-  );
+  const [dToken, setDToken] = useState(localStorage.getItem("dToken") || "");
   const [appointments, setAppointments] = useState([]);
 
   const getAppointments = async () => {
     try {
-      const { data } = await axios.get(
-        backendUrl + "/api/doctor/getAppointments",
-        { headers: { dToken } }
-      );
-      if (data.success) {
-        setAppointments(data.appointments.reverse());
-        console.log(data.appointments.reverse());
-      } else {
+      const { data } = await axios.get(`${backendUrl}/api/doctor/getAppointments`, {
+        headers: { dToken },
+      });
+
+      if (!data.success) {
         toast.error(data.message);
+        return;
       }
-    } catch (e) {
-      console.log(e);
-      toast.error(e.message);
+
+      setAppointments([...data.appointments].reverse());
+    } catch (error) {
+      toast.error(error.response?.data?.message || error.message);
     }
   };
+
   const cancelAppointment = async (appointmentId) => {
     try {
       const { data } = await axios.post(
-        backendUrl + "/api/doctor/cancel-appointment",
+        `${backendUrl}/api/doctor/cancel-appointment`,
         { appointmentId },
         { headers: { dToken } }
       );
-      if (data.success) {
-        toast.success(data.message);
-        getAppointments();
-      } else {
+
+      if (!data.success) {
         toast.error(data.message);
+        return;
       }
-    } catch (e) {
-      toast.error(e.message);
+
+      toast.success(data.message);
+      await getAppointments();
+    } catch (error) {
+      toast.error(error.response?.data?.message || error.message);
     }
-  };
-  const value = {
-    dToken,
-    setDToken,
-    backendUrl,
-    getAppointments,
-    appointments,
-    setAppointments,
-    cancelAppointment,
   };
 
   return (
-    <DoctorContext.Provider value={value}>
-      {props.children}
+    <DoctorContext.Provider
+      value={{
+        dToken,
+        setDToken,
+        backendUrl,
+        getAppointments,
+        appointments,
+        setAppointments,
+        cancelAppointment,
+      }}
+    >
+      {children}
     </DoctorContext.Provider>
   );
 };
