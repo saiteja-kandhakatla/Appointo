@@ -205,7 +205,14 @@ Create a `.env` file in `admin/` with:
 VITE_BACKEND_URL=http://localhost:1310
 ```
 
-If you are testing against your Render backend instead of a local backend, replace `http://localhost:1310` with your deployed API origin.
+Live backend:
+[appointo-backend-kk1e.onrender.com](https://appointo-backend-kk1e.onrender.com)
+
+If you are testing against Render instead of a local backend, use:
+
+```env
+VITE_BACKEND_URL=https://appointo-backend-kk1e.onrender.com
+```
 
 ## Local Development
 
@@ -271,24 +278,21 @@ npm run check
 - Start command: `npm start`
 
 Health check:
-
-```text
-/api/health
-```
+[https://appointo-backend-kk1e.onrender.com/api/health](https://appointo-backend-kk1e.onrender.com/api/health)
 
 ### Vercel Environment Variables
 
 For `frontend`:
 
 ```env
-VITE_BACKEND_URL=https://your-render-backend.onrender.com
+VITE_BACKEND_URL=https://appointo-backend-kk1e.onrender.com
 VITE_RAZORPAY_KEY_ID=your_razorpay_key_id
 ```
 
 For `admin`:
 
 ```env
-VITE_BACKEND_URL=https://your-render-backend.onrender.com
+VITE_BACKEND_URL=https://appointo-backend-kk1e.onrender.com
 ```
 
 Important:
@@ -299,15 +303,18 @@ Important:
 
 ## API Notes
 
-Examples of active API patterns:
+Examples of active API routes:
 
-- `GET /api/doctor/list`
-- `POST /api/user/login`
-- `GET /api/user/get-profile`
-- `POST /api/user/book-appointment`
-- `POST /api/admin/login`
-- `GET /api/admin/dashboard`
-- `GET /api/doctor/getAppointments`
+- [GET /api/health](https://appointo-backend-kk1e.onrender.com/api/health)
+- [GET /api/doctor/list](https://appointo-backend-kk1e.onrender.com/api/doctor/list)
+- [GET /api/admin/dashboard](https://appointo-backend-kk1e.onrender.com/api/admin/dashboard)
+- [GET /api/doctor/getAppointments](https://appointo-backend-kk1e.onrender.com/api/doctor/getAppointments)
+
+POST routes used by the apps:
+
+- `POST https://appointo-backend-kk1e.onrender.com/api/user/login`
+- `POST https://appointo-backend-kk1e.onrender.com/api/user/book-appointment`
+- `POST https://appointo-backend-kk1e.onrender.com/api/admin/login`
 
 ## Current Project Status
 
@@ -339,4 +346,3 @@ The current UI direction is:
 ## Author
 
 Built by Sai Teja.
-
