@@ -44,11 +44,11 @@ const Doctors = () => {
         </button>
       </div>
 
-      <div className="grid gap-6 md:grid-cols-[260px_1fr]">
+      <div className="grid gap-4 md:grid-cols-[260px_1fr] md:gap-6">
         <aside
           className={`space-y-2 ${
             showFilter ? "block" : "hidden md:block"
-          } rounded-2xl border border-emerald-100 bg-white p-4 h-fit`}
+          } h-fit rounded-2xl border border-emerald-100 bg-white p-4 md:sticky md:top-24`}
         >
           <button
             type="button"
@@ -84,7 +84,7 @@ const Doctors = () => {
               No doctors found for this speciality.
             </div>
           ) : (
-            <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {filteredDoctors.map((doctor) => (
                 <button
                   type="button"
@@ -97,7 +97,7 @@ const Doctors = () => {
                 >
                   <div className="bg-emerald-50 p-2">
                     <img
-                      className="h-56 w-full rounded-xl object-cover"
+                      className="h-52 w-full rounded-xl object-cover sm:h-56"
                       src={doctor.image}
                       alt={doctor.name}
                     />

@@ -124,19 +124,21 @@ const Appointment = () => {
   }
 
   return (
-    <section className="mt-10">
+    <section className="mt-8 md:mt-10">
       <div className="grid gap-5 lg:grid-cols-[320px_1fr]">
         <div className="overflow-hidden rounded-3xl border border-emerald-100 bg-white p-3">
           <img
-            className="h-full w-full rounded-2xl bg-emerald-50 object-cover"
+            className="h-72 w-full rounded-2xl bg-emerald-50 object-cover sm:h-80 lg:h-full"
             src={docInfo.image}
             alt={docInfo.name}
           />
         </div>
 
-        <div className="rounded-3xl border border-emerald-100 bg-white p-6">
+        <div className="rounded-3xl border border-emerald-100 bg-white p-5 sm:p-6">
           <div className="mb-3 flex flex-wrap items-center gap-2">
-            <h1 className="text-3xl font-extrabold text-slate-900">{docInfo.name}</h1>
+            <h1 className="text-2xl font-extrabold text-slate-900 sm:text-3xl">
+              {docInfo.name}
+            </h1>
             <img className="w-5" src={assets.verified_icon} alt="Verified" />
           </div>
           <p className="text-sm text-slate-600">
@@ -161,7 +163,7 @@ const Appointment = () => {
         </div>
       </div>
 
-      <div className="mt-8 rounded-3xl border border-emerald-100 bg-white p-6">
+      <div className="mt-8 rounded-3xl border border-emerald-100 bg-white p-5 sm:p-6">
         <h2 className="text-xl font-extrabold text-slate-900">Select booking slot</h2>
 
         <div className="mt-4 flex gap-3 overflow-x-auto pb-2">
@@ -169,7 +171,7 @@ const Appointment = () => {
             <button
               type="button"
               key={`day-${index}`}
-              className={`min-w-16 rounded-2xl px-4 py-3 text-center text-sm font-semibold ${
+              className={`min-w-[72px] rounded-2xl px-4 py-3 text-center text-sm font-semibold disabled:cursor-not-allowed disabled:opacity-50 ${
                 slotIndex === index
                   ? "bg-emerald-600 text-white"
                   : "border border-slate-200 text-slate-600"
@@ -209,7 +211,7 @@ const Appointment = () => {
 
         <button
           type="button"
-          className="mt-5 rounded-full bg-emerald-600 px-7 py-3 text-sm font-semibold text-white transition hover:bg-emerald-700"
+          className="mt-5 w-full rounded-full bg-emerald-600 px-7 py-3 text-sm font-semibold text-white transition hover:bg-emerald-700 sm:w-auto"
           onClick={bookAppointment}
         >
           Book appointment

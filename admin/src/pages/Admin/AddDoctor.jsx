@@ -81,11 +81,11 @@ const AddDoctor = () => {
   };
 
   return (
-    <section className="panel p-5 md:p-6">
+    <section className="panel p-4 sm:p-5 md:p-6">
       <h1 className="mb-5 text-2xl font-extrabold text-slate-900">Add doctor</h1>
 
       <form onSubmit={onSubmitHandler} className="space-y-6">
-        <div className="flex items-center gap-4">
+        <div className="flex flex-col items-start gap-4 sm:flex-row sm:items-center">
           <label htmlFor="doc-img" className="cursor-pointer">
             <img
               className="h-16 w-16 rounded-full bg-slate-100 object-cover"
@@ -231,7 +231,7 @@ const AddDoctor = () => {
         <button
           type="submit"
           disabled={submitting}
-          className="rounded-full bg-sky-600 px-6 py-2.5 text-sm font-semibold text-white transition hover:bg-sky-700 disabled:opacity-60"
+          className="w-full rounded-full bg-sky-600 px-6 py-2.5 text-sm font-semibold text-white transition hover:bg-sky-700 disabled:opacity-60 sm:w-auto"
         >
           {submitting ? "Adding doctor..." : "Add doctor"}
         </button>

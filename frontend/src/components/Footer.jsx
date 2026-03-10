@@ -3,7 +3,7 @@ import { assets } from "../assets/assets";
 
 const Footer = () => {
   return (
-    <footer className="mt-20 rounded-3xl border border-emerald-100 bg-white/90 p-8 shadow-sm">
+    <footer className="mt-16 rounded-3xl border border-emerald-100 bg-white/90 p-6 shadow-sm sm:p-8">
       <div className="grid gap-8 md:grid-cols-[2fr_1fr_1fr]">
         <div>
           <img className="mb-4 w-40" src={assets.logo} alt="Appointo logo" />
@@ -14,7 +14,7 @@ const Footer = () => {
         </div>
 
         <div>
-          <p className="mb-3 text-base font700 font-semibold text-slate-800">Company</p>
+          <p className="mb-3 text-base font-semibold text-slate-800">Company</p>
           <div className="space-y-2 text-sm text-slate-600">
             <Link className="block hover:text-emerald-700" to="/">
               Home

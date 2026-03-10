@@ -17,7 +17,7 @@ const AllAppointments = () => {
     <section className="panel p-4 md:p-6">
       <h1 className="mb-4 text-2xl font-extrabold text-slate-900">All appointments</h1>
 
-      <div className="overflow-x-auto">
+      <div className="hidden overflow-x-auto md:block">
         <table className="w-full min-w-[900px] text-left text-sm">
           <thead>
             <tr className="border-b border-sky-100 text-slate-600">
@@ -69,6 +69,55 @@ const AllAppointments = () => {
             ))}
           </tbody>
         </table>
+      </div>
+
+      <div className="space-y-3 md:hidden">
+        {appointments.map((item, index) => (
+          <article
+            key={item._id}
+            className="rounded-2xl border border-sky-100 bg-white p-4"
+          >
+            <div className="flex items-start justify-between gap-3">
+              <div className="flex min-w-0 items-center gap-3">
+                <img
+                  className="h-10 w-10 rounded-full object-cover"
+                  src={item.userData.image}
+                  alt={item.userData.name}
+                />
+                <div className="min-w-0">
+                  <p className="truncate font-semibold text-slate-900">
+                    {index + 1}. {item.userData.name}
+                  </p>
+                  <p className="text-xs text-slate-500">
+                    Age {calculateAge(item.userData.dob)}
+                  </p>
+                </div>
+              </div>
+              <p className="text-sm font-semibold text-slate-900">₹{item.amount}</p>
+            </div>
+
+            <div className="mt-3 space-y-1 text-sm text-slate-600">
+              <p>{slotDateFormat(item.slotDate)} • {item.slotTime}</p>
+              <p className="font-medium text-slate-700">{item.docData.name}</p>
+            </div>
+
+            <div className="mt-4">
+              {item.cancelled ? (
+                <span className="inline-flex rounded-full bg-red-50 px-3 py-1 text-xs font-semibold text-red-600">
+                  Cancelled
+                </span>
+              ) : (
+                <button
+                  type="button"
+                  onClick={() => cancelAppointment(item._id)}
+                  className="w-full rounded-full border border-red-200 px-3 py-2 text-sm font-semibold text-red-600 hover:bg-red-50"
+                >
+                  Cancel appointment
+                </button>
+              )}
+            </div>
+          </article>
+        ))}
       </div>
     </section>
   );

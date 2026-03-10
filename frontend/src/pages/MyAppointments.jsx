@@ -140,15 +140,15 @@ const MyAppointments = () => {
             className="grid gap-4 rounded-2xl border border-emerald-100 bg-white p-4 md:grid-cols-[120px_1fr_auto] md:items-center"
           >
             <img
-              className="h-28 w-28 rounded-xl bg-emerald-50 object-cover"
+              className="h-40 w-full rounded-xl bg-emerald-50 object-cover sm:h-28 sm:w-28"
               src={item.docData.image}
               alt={item.docData.name}
             />
 
-            <div className="text-sm text-slate-600">
+            <div className="min-w-0 text-sm text-slate-600">
               <p className="text-lg font-bold text-slate-900">{item.docData.name}</p>
               <p>{item.docData.speciality}</p>
-              <p className="mt-2 text-slate-700">
+              <p className="mt-2 break-words text-slate-700">
                 {item.docData.address.line1}, {item.docData.address.line2}
               </p>
               <p className="mt-1 font-semibold text-slate-800">
@@ -160,7 +160,7 @@ const MyAppointments = () => {
               {!item.cancelled && item.payment && (
                 <button
                   type="button"
-                  className="rounded-lg bg-emerald-50 px-3 py-2 text-sm font-semibold text-emerald-700"
+                  className="w-full rounded-lg bg-emerald-50 px-3 py-2 text-sm font-semibold text-emerald-700"
                 >
                   Paid
                 </button>
@@ -169,7 +169,7 @@ const MyAppointments = () => {
               {!item.cancelled && !item.payment && (
                 <button
                   type="button"
-                  className="rounded-lg border border-emerald-300 px-3 py-2 text-sm font-semibold text-emerald-700 hover:bg-emerald-50"
+                  className="w-full rounded-lg border border-emerald-300 px-3 py-2 text-sm font-semibold text-emerald-700 hover:bg-emerald-50"
                   onClick={() => appointmentRazorpay(item._id)}
                 >
                   Pay online
@@ -179,7 +179,7 @@ const MyAppointments = () => {
               {!item.cancelled && (
                 <button
                   type="button"
-                  className="rounded-lg border border-red-300 px-3 py-2 text-sm font-semibold text-red-600 hover:bg-red-50"
+                  className="w-full rounded-lg border border-red-300 px-3 py-2 text-sm font-semibold text-red-600 hover:bg-red-50"
                   onClick={() => cancelAppointment(item._id)}
                 >
                   Cancel
@@ -189,7 +189,7 @@ const MyAppointments = () => {
               {item.cancelled && (
                 <button
                   type="button"
-                  className="rounded-lg bg-red-50 px-3 py-2 text-sm font-semibold text-red-600"
+                  className="w-full rounded-lg bg-red-50 px-3 py-2 text-sm font-semibold text-red-600"
                 >
                   Cancelled
                 </button>

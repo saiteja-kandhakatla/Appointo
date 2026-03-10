@@ -15,6 +15,8 @@ body,
 body {
   font-family: "Plus Jakarta Sans", sans-serif;
   color: #0f172a;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
 }
 
 .admin-shell {
@@ -81,5 +83,17 @@ body {
 @media (max-width: 900px) {
   .admin-body {
     grid-template-columns: 1fr;
+  }
+
+  .admin-container {
+    width: min(1260px, calc(100vw - 1rem));
+    padding-top: 0.75rem;
+    padding-bottom: 1.25rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .panel {
+    border-radius: 16px;
   }
 }

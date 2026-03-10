@@ -56,13 +56,13 @@ const MyProfile = () => {
   }
 
   return (
-    <section className="mx-auto mt-10 max-w-3xl rounded-3xl border border-emerald-100 bg-white p-6 shadow-sm md:p-8">
+    <section className="mx-auto mt-10 max-w-3xl rounded-3xl border border-emerald-100 bg-white p-5 shadow-sm sm:p-6 md:p-8">
       <div className="grid gap-6 md:grid-cols-[180px_1fr]">
-        <div>
+        <div className="mx-auto md:mx-0">
           {isEdit ? (
-            <label htmlFor="profile-image" className="block cursor-pointer">
+            <label htmlFor="profile-image" className="block cursor-pointer text-center md:text-left">
               <img
-                className="h-44 w-44 rounded-2xl object-cover"
+                className="h-36 w-36 rounded-2xl object-cover sm:h-44 sm:w-44"
                 src={image ? URL.createObjectURL(image) : userData.image || assets.profile_pic}
                 alt="Profile"
               />
@@ -78,24 +78,26 @@ const MyProfile = () => {
             </label>
           ) : (
             <img
-              className="h-44 w-44 rounded-2xl object-cover"
+              className="h-36 w-36 rounded-2xl object-cover sm:h-44 sm:w-44"
               src={userData.image || assets.profile_pic}
               alt="Profile"
             />
           )}
         </div>
 
-        <div>
+        <div className="min-w-0">
           {isEdit ? (
             <input
-              className="w-full rounded-xl border border-slate-300 px-3 py-2 text-2xl font-extrabold text-slate-900"
+              className="w-full rounded-xl border border-slate-300 px-3 py-2 text-xl font-extrabold text-slate-900 sm:text-2xl"
               value={userData.name || ""}
               onChange={(event) =>
                 setUserData((prev) => ({ ...prev, name: event.target.value }))
               }
             />
           ) : (
-            <h1 className="text-3xl font-extrabold text-slate-900">{userData.name}</h1>
+            <h1 className="break-words text-2xl font-extrabold text-slate-900 sm:text-3xl">
+              {userData.name}
+            </h1>
           )}
 
           <div className="mt-5 grid gap-4 md:grid-cols-2">
@@ -190,7 +192,7 @@ const MyProfile = () => {
             {isEdit ? (
               <button
                 type="button"
-                className="rounded-full bg-emerald-600 px-6 py-2.5 text-sm font-semibold text-white"
+                className="w-full rounded-full bg-emerald-600 px-6 py-2.5 text-sm font-semibold text-white sm:w-auto"
                 onClick={updateUserProfileData}
               >
                 Save profile
@@ -198,7 +200,7 @@ const MyProfile = () => {
             ) : (
               <button
                 type="button"
-                className="rounded-full border border-emerald-600 px-6 py-2.5 text-sm font-semibold text-emerald-700"
+                className="w-full rounded-full border border-emerald-600 px-6 py-2.5 text-sm font-semibold text-emerald-700 sm:w-auto"
                 onClick={() => setIsEdit(true)}
               >
                 Edit profile

@@ -22,14 +22,18 @@ const Navbar = () => {
   };
 
   return (
-    <header className="sticky top-2 z-30 rounded-2xl border border-emerald-100 bg-white/85 px-4 py-3 backdrop-blur md:px-6">
+    <header className="sticky top-2 z-30 rounded-2xl border border-emerald-100 bg-white/85 px-3 py-3 backdrop-blur sm:px-4 md:px-6">
       <div className="flex items-center justify-between gap-4">
         <button
           type="button"
           className="cursor-pointer"
           onClick={() => navigate("/")}
         >
-          <img className="w-36 md:w-40" src={assets.logo} alt="Appointo logo" />
+          <img
+            className="w-28 sm:w-32 md:w-40"
+            src={assets.logo}
+            alt="Appointo logo"
+          />
         </button>
 
         <nav className="hidden items-center gap-2 md:flex">
@@ -102,13 +106,24 @@ const Navbar = () => {
           )}
         </div>
 
-        <button
-          type="button"
-          className="rounded-lg border border-emerald-100 p-2 md:hidden"
-          onClick={() => setShowMenu(true)}
-        >
-          <img className="w-5" src={assets.menu_icon} alt="Open menu" />
-        </button>
+        <div className="flex items-center gap-2 md:hidden">
+          {!token && (
+            <button
+              type="button"
+              className="rounded-full bg-emerald-600 px-3 py-2 text-xs font-semibold text-white"
+              onClick={() => navigate("/login")}
+            >
+              Join
+            </button>
+          )}
+          <button
+            type="button"
+            className="rounded-lg border border-emerald-100 p-2"
+            onClick={() => setShowMenu(true)}
+          >
+            <img className="w-5" src={assets.menu_icon} alt="Open menu" />
+          </button>
+        </div>
       </div>
 
       {showMenu && (

@@ -32,8 +32,8 @@ const SideBar = () => {
   const links = aToken ? adminLinks : dToken ? doctorLinks : [];
 
   return (
-    <aside className="panel h-fit p-3">
-      <nav className="space-y-1">
+    <aside className="panel h-fit p-3 md:sticky md:top-24">
+      <nav className="grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-1 md:space-y-1">
         {links.map((item) => (
           <NavLink
             key={item.to}
@@ -47,7 +47,7 @@ const SideBar = () => {
             }
           >
             <img className="h-4 w-4" src={item.icon} alt={item.label} />
-            <span>{item.label}</span>
+            <span className="truncate">{item.label}</span>
           </NavLink>
         ))}
       </nav>
