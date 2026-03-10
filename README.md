@@ -44,7 +44,7 @@ Core technologies:
 
 ### 2. Admin and Doctor Panel
 
-Location: [admin](https://appointo-admin-two.vercel.app/admin-dashboard)
+Location: [admin](https://appointo-admin-two.vercel.app/)
 
 Main capabilities:
 
