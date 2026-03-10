@@ -22,7 +22,7 @@ Appointo/
 
 ### 1. Patient App
 
-Location: [frontend](/Users/saiteja/MySpace/WEB-Projects/Appointo/frontend)
+Location: [frontend](https://appointo-mauve.vercel.app/)
 
 Main capabilities:
 
@@ -44,7 +44,7 @@ Core technologies:
 
 ### 2. Admin and Doctor Panel
 
-Location: [admin](/Users/saiteja/MySpace/WEB-Projects/Appointo/admin)
+Location: [admin](https://appointo-admin-two.vercel.app/admin-dashboard)
 
 Main capabilities:
 
@@ -119,7 +119,7 @@ Core technologies:
 
 ### Route Groups
 
-- [Backend/routes/userRoute.js](/Users/saiteja/MySpace/WEB-Projects/Appointo/Backend/routes/userRoute.js)
+- [Backend/routes/userRoute.js](https://appointo-backend-kk1e.onrender.com/routes/userRoute.js)
 - [Backend/routes/adminRoute.js](/Users/saiteja/MySpace/WEB-Projects/Appointo/Backend/routes/adminRoute.js)
 - [Backend/routes/doctorRoute.js](/Users/saiteja/MySpace/WEB-Projects/Appointo/Backend/routes/doctorRoute.js)
 
